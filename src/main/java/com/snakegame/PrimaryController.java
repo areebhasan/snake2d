@@ -43,7 +43,9 @@ public class PrimaryController {
         direction = Direction.RIGHT; // Initial direction
         spawnFood(); // Place the first food
         running = true;
+        gameOver = false; // Reset the game over flag
     }
+    
     
     
     public void initialize() {
