@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 import java.util.LinkedList;
 
@@ -28,6 +30,7 @@ public class PrimaryController {
     private boolean running = false;
     private long lastUpdate = 0;
     private long speed = 200_000_000; // Speed in nanoseconds (initial speed)
+    private boolean gameOver = false;
 
 
     private enum Direction {
@@ -94,6 +97,7 @@ public class PrimaryController {
             int[] segment = snake.get(i);
             if (segment[0] == headX && segment[1] == headY) {
                 running = false; // Stop the game if the snake collides with itself
+                gameOver = true;
                 return;
             }
         }
@@ -113,6 +117,7 @@ public class PrimaryController {
 
     private void drawGame(GraphicsContext gc) {
         // Clear the canvas
+        gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
     
@@ -134,6 +139,14 @@ public class PrimaryController {
     
         // Update the score label
         scoreLabel.setText("Score: " + (snake.size() - 1));
+
+        //Game Over display
+        if (gameOver) {
+                gc.setFill(Color.RED);
+                gc.setTextAlign(TextAlignment.CENTER); // Align text to center
+                gc.setFont(new Font("Arial", 20)); // Set font size for visibility
+                gc.fillText("Game Over", gameCanvas.getWidth() / 2, gameCanvas.getHeight() / 2);
+            }
     }
     
 
