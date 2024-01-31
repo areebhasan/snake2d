@@ -26,6 +26,9 @@ public class PrimaryController {
     private int gridHeight = 20;
     private Direction direction = Direction.RIGHT;
     private boolean running = false;
+    private long lastUpdate = 0;
+    private long speed = 200_000_000; // Speed in nanoseconds (initial speed)
+
 
     private enum Direction {
         UP, DOWN, LEFT, RIGHT
@@ -48,12 +51,14 @@ public class PrimaryController {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (running) {
+                if (running && now - lastUpdate >= speed) {
                     updateGame();
                     drawGame(gc);
+                    lastUpdate = now;
                 }
             }
         }.start();
+        
     
         gameCanvas.setFocusTraversable(true);
         gameCanvas.setOnKeyPressed(this::handleKeyPress);
@@ -110,20 +115,27 @@ public class PrimaryController {
         // Clear the canvas
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
-
-        // Draw the snake
+    
+        // Draw the snake's body
         gc.setFill(Color.GREEN);
-        for (int[] segment : snake) {
+        for (int i = 1; i < snake.size(); i++) { // Start from 1 to skip the head
+            int[] segment = snake.get(i);
             gc.fillRect(segment[0] * gridSize, segment[1] * gridSize, gridSize, gridSize);
         }
-
+    
+        // Draw the snake's head
+        int[] head = snake.getFirst();
+        gc.setFill(Color.DARKGREEN);
+        gc.fillOval(head[0] * gridSize, head[1] * gridSize, gridSize, gridSize);
+    
         // Draw the food
         gc.setFill(Color.RED);
         gc.fillRect(food[0] * gridSize, food[1] * gridSize, gridSize, gridSize);
-
+    
         // Update the score label
         scoreLabel.setText("Score: " + (snake.size() - 1));
     }
+    
 
     private void spawnFood() {
         int x = (int) (Math.random() * gridWidth);
