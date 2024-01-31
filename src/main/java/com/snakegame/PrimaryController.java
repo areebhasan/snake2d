@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
+
 import java.util.LinkedList;
 
 public class PrimaryController {
@@ -158,6 +159,10 @@ public class PrimaryController {
         food = new int[]{x, y};
     }
     
+    @FXML
+    private void handleRestart() {
+        startGame(); // Call startGame method to restart the game
+    }
 
     private void handleKeyPress(KeyEvent event) {
         if (event.getCode() == KeyCode.R) {

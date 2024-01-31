@@ -18,7 +18,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         System.out.println("JavaFX Version: " + System.getProperty("javafx.version"));
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        scene = new Scene(loadFXML("primary"), 700, 700);
         stage.setScene(scene);
         stage.setTitle("Snake Game");
         stage.show();
